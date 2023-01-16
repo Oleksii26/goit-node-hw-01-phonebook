@@ -1,5 +1,19 @@
 const contactsOperations = require('./contacts')
 
+const { Command } = require("commander");
+const program = new Command();
+
+program
+  .option("-a, --action <type>", "choose action")
+  .option("-i, --id <type>", "user id")
+  .option("-n, --name <type>", "user name")
+  .option("-e, --email <type>", "user email")
+  .option("-p, --phone <type>", "user phone");
+
+program.parse(process.argv);
+
+const argv = program.opts();
+
 const invokeAction = async ({ action, id, name, email, phone }) => {
   switch (action) {
     case 'list':
@@ -25,15 +39,4 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
       console.warn("\x1B[31m Unknown action type!");
   }
 }
-
-// invokeAction({ action: 'list' })
-
-const id = '6'
-invokeAction({ action: 'get', id})
-
-// const name = 'Petya'
-// const email = 'Petya_Nagibator@i.ua'
-// const phone = '66 - 666 - 666'
-// invokeAction({ action: 'add', name, phone, email })
-// const id = '15971965-8704-4e83-b958-ebac04749186'
-// invokeAction({ action: 'remove', id})
+invokeAction(argv)
